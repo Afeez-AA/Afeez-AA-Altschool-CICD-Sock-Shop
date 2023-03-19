@@ -1,8 +1,8 @@
 data "aws_availability_zones" "azs" {}
-module "afz-altschool-vpc" {
+module "myapp-vpc" {
   source          = "terraform-aws-modules/vpc/aws"
   version         = "3.19.0"
-  name            = "afz-altschool-vpc"
+  name            = "myapp-vpc"
   cidr            = var.vpc_cidr_block
   private_subnets = var.private_subnet_cidr_blocks
   public_subnets  = var.public_subnet_cidr_blocks
