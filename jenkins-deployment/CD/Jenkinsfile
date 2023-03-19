@@ -1,0 +1,65 @@
+#!/usr/bin/env groovy
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = "us-east-1"
+    }
+    stages {
+        stage("Create an EKS Cluster") {
+            steps {
+                script {
+                    dir('jenkins-deployment/EKS') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+                    }
+                }
+            }
+        }
+        stage("Validate cluster and Create Namespaces") {
+            steps {
+                script {
+                    dir('EKS') {
+                        sh "aws eks update-kubeconfig --name myapp-eks-cluster"
+                        sh "kubectl create namespace afeez-portfolio"
+                        sh "kubectl create namespace sock-shop"
+                    }
+                }
+            }
+        }
+
+        stage("Deploy sock-shop to EKS"){
+            steps{
+                script {
+                    dir("jenkins-deployment/manifest-app"){
+                        sh "kubectl apply -n sock-shop -f ."
+                    }
+                }         
+            }
+        }
+
+        stage("Deploy Monitoring app"){
+            steps{
+                script {
+                    dir("jenkins-deployment/manifests-monitoring"){
+                        sh "kubectl apply -n sock-shop -f ."
+                    }
+                }         
+            }
+        }
+
+        stage("Deploy Portfolio to EKS"){
+            steps{
+                script {
+                    dir("jenkins-deployment/Portfolio"){
+                        sh "kubectl apply -n afeez-portfolio -f ."
+                    }
+                }         
+            }
+        }
+
+
+
+    }
+}

@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: afeez-portfolio
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-web-deployment
+  namespace: afeez-portfolio
+spec:
+  selector:
+    matchLabels:
+      app: simple-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: simple-web
+    spec:
+      containers:
+      - name: simple-web-container
+        image: afeez511/my-portfolio:v1
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-web-service
+  namespace: afeez-portfolio
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: simple-web
