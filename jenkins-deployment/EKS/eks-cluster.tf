@@ -10,7 +10,7 @@ module "eks" {
     subnet_ids = module.myapp-vpc.private_subnets
 
     tags = {
-        environment = "Prod"
+        environment = "development"
         application = "myapp"
     }
 
@@ -18,7 +18,7 @@ module "eks" {
         dev = {
             min_size = 4
             max_size = 5
-            desired_size = 2
+            desired_size = 3
 
             instance_types = ["t3.medium"]
         }
