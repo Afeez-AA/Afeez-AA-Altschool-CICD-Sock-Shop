@@ -1,4 +1,4 @@
-
+data "aws_availability_zones" "azs" {}
 module "afz-altschool-vpc" {
   source          = "terraform-aws-modules/vpc/aws"
   version         = "3.19.0"
