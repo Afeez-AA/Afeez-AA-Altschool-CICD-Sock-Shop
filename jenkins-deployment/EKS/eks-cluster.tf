@@ -18,7 +18,7 @@ module "eks" {
         dev = {
             min_size = 4
             max_size = 5
-            desired_size = 3
+            desired_size = 2
 
             instance_types = ["t3.medium"]
         }
