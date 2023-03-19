@@ -23,6 +23,7 @@ pipeline {
                         sh "aws eks update-kubeconfig --name myapp-eks-cluster"
                         sh "kubectl create namespace afeez-portfolio"
                         sh "kubectl create namespace sock-shop"
+                        sh "kubectl create namespace monitoring"
                     }
                 }
             }
@@ -42,7 +43,7 @@ pipeline {
             steps{
                 script {
                     dir("jenkins-deployment/manifests-monitoring"){
-                        sh "kubectl apply -n sock-shop -f ."
+                        sh "kubectl apply -n monitoring -f ."
                     }
                 }         
             }
