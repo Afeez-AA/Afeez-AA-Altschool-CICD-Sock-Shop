@@ -16,6 +16,8 @@ From the `Jenkins-Server-Setup` folder, run the following commands to create you
 
 Step2:
 Login to the jenkins server, configure the jenkins with the necessary environment and Github account.
+![img](stageview.png)
+![img](finished%20view.png)
 
 
 
