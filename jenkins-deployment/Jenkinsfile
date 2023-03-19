@@ -17,7 +17,7 @@ pipeline {
             }
         }
         
-        stage("Validate cluster and Create Namespaces") {
+        stage("Validate cluster ") {
             steps {
                 script {
                         sh "aws eks update-kubeconfig --name myapp-eks-cluster"
@@ -25,34 +25,34 @@ pipeline {
                 }
         }
 
-        // stage("Create Namespaces"){
-        //     steps {
-        //         script {
-        //             // Check if the namespaces already exist
-        //             def namespaces = sh(script: 'kubectl get namespace -o jsonpath=\'{.items[*].metadata.name}\'', returnStdout: true).trim()
+        stage("Create Namespaces"){
+            steps {
+                script {
+                    // Check if the namespaces already exist
+                    def namespaces = sh(script: 'kubectl get namespace -o jsonpath=\'{.items[*].metadata.name}\'', returnStdout: true).trim()
 
-        //             def sock-shopExists = namespaces.split(" ").contains("sock-shop")
-        //             def monitoringExists = namespaces.split(" ").contains("monitoring")
-        //             def afeez-portfolioExists = namespaces.split(" ").contains("afeez-portfolio")
+                    def sock-shopExists = namespaces.split(" ").contains("sock-shop")
+                    def monitoringExists = namespaces.split(" ").contains("monitoring")
+                    def afeez-portfolioExists = namespaces.split(" ").contains("afeez-portfolio")
 
-        //             if (sock-shopExists && monitoringExists && portfolioExists) {
-        //                 // All namespaces already exist, skip the create command
-        //                 echo 'All namespaces already exist, skipping create command'
-        //             } else {
-        //                 // Create namespaces that don't exist
-        //                 if (!sockshopExists) {
-        //                     sh 'kubectl create namespace sock-shop'
-        //                 }
-        //                 if (!monitoringExists) {
-        //                     sh 'kubectl create namespace monitoring'
-        //                 }
-        //                 if (!afeez-portfolioExists) {
-        //                     sh 'kubectl create namespace afeez-portfolio'
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                    if (sock-shopExists && monitoringExists && portfolioExists) {
+                        // All namespaces already exist, skip the create command
+                        echo 'All namespaces already exist, skipping create command'
+                    } else {
+                        // Create namespaces that don't exist
+                        if (!sockshopExists) {
+                            sh 'kubectl create namespace sock-shop'
+                        }
+                        if (!monitoringExists) {
+                            sh 'kubectl create namespace monitoring'
+                        }
+                        if (!afeez-portfolioExists) {
+                            sh 'kubectl create namespace afeez-portfolio'
+                        }
+                    }
+                }
+            }
+        }
 
         stage("Deploy sock-shop to EKS"){
             steps{
